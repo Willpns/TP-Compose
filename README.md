@@ -4,33 +4,33 @@ Ce projet consiste à déployer une architecture multi-services pilotant simulta
 
 ## 🏗️ Architecture de la Solution
 
-[cite_start]L'infrastructure est composée de 5 services interconnectés [cite: 111-120] :
+L'infrastructure est composée de 5 services interconnectés :
 
-1.  [cite_start]**db_mongo** : Image MongoDB personnalisée (non-root) gérant la base `blog_db`[cite: 117].
-2.  [cite_start]**db_mysql** : Image officielle MySQL 8.0 pour le stockage des utilisateurs[cite: 118].
-3.  [cite_start]**admin_mongo** : Interface web `mongo-express` pour le pilotage NoSQL[cite: 118].
-4.  [cite_start]**admin_mysql** : Interface web `adminer` pour l'administration SQL[cite: 119].
-5.  [cite_start]**api** : Application FastAPI (Python) faisant le pont entre les deux mondes[cite: 120].
+1.  **db_mongo** : Image MongoDB personnalisée (non-root) gérant la base `blog_db`.
+2.  **db_mysql** : Image officielle MySQL 8.0 pour le stockage des utilisateurs.
+3.  **admin_mongo** : Interface web `mongo-express` pour le pilotage NoSQL.
+4.  **admin_mysql** : Interface web `adminer` pour l'administration SQL.
+5.  **api** : Application FastAPI (Python) faisant le pont entre les deux mondes.
 
 ## 🚀 Fonctionnalités Clés
 
 ### Résilience et Dépendances
-* [cite_start]**Politique de redémarrage** : Configurée sur `on-failure` pour ne redémarrer automatiquement que si l'arrêt est dû à une erreur (crash)[cite: 124, 186].
+* **Politique de redémarrage** : Configurée sur `on-failure` pour ne redémarrer automatiquement que si l'arrêt est dû à une erreur (crash).
 * **Gestion des dépendances** : 
-    * [cite_start]L'API ne démarre que lorsque les deux bases de données sont considérées comme saines (`healthy`) par leurs healthchecks respectifs[cite: 126].
-    * [cite_start]Adminer attend que `db_mysql` soit saine[cite: 127].
-    * [cite_start]Mongo-Express attend que `db_mongo` soit saine[cite: 128].
+    * L'API ne démarre que lorsque les deux bases de données sont considérées comme saines (`healthy`) par leurs healthchecks respectifs.
+    * Adminer attend que `db_mysql` soit saine.
+    * Mongo-Express attend que `db_mongo` soit saine.
 
 ### Healthchecks "Métiers" Stricts
-[cite_start]Les tests de santé valident l'intégrité des données et non seulement la présence d'un processus [cite: 153-155] :
-* **MongoDB** : Vérifie l'accès à la base `blog_db` et confirme que la collection `posts` contient exactement 5 articles[cite: 159, 160].
-* [cite_start]**MySQL** : Vérifie la connectivité et confirme que la table `utilisateurs` contient les données d'initialisation[cite: 162, 163].
-* **API** : Interroge ses propres routes internes `/posts` et `/users`. [cite_start]Le statut n'est "OK" que si les deux bases répondent [cite: 164-166].
+Les tests de santé valident l'intégrité des données et non seulement la présence d'un processus :
+* **MongoDB** : Vérifie l'accès à la base `blog_db` et confirme que la collection `posts` contient exactement 5 articles.
+* **MySQL** : Vérifie la connectivité et confirme que la table `utilisateurs` contient les données d'initialisation.
+* **API** : Interroge ses propres routes internes `/posts` et `/users`. Le statut n'est "OK" que si les deux bases répondent.
 
 ### Sécurité et Persistance
-* **Isolation Réseau** : Les bases de données sont isolées du monde extérieur dans un réseau interne[cite: 178].
-* [cite_start]**Volumes** : Persistance des données assurée pour les deux bases de données[cite: 175].
-* [cite_start]**Secrets** : Utilisation impérative d'un fichier `.env` pour ne stocker aucun mot de passe en dur[cite: 176].
+* **Isolation Réseau** : Les bases de données sont isolées du monde extérieur dans un réseau interne.
+* **Volumes** : Persistance des données assurée pour les deux bases de données.
+* **Secrets** : Utilisation impérative d'un fichier `.env` pour ne stocker aucun mot de passe en dur.
 
 ## 🛠️ Installation et Lancement
 
