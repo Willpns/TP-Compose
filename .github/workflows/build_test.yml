@@ -25,7 +25,7 @@ jobs:
       - name: Docker Scout Scan
         uses: docker/scout-action@v1
         with:
-          command: cves
+          command: cves,recommendations
           image: my-app:1.0.0
           file: ./Dockerfile
           only-severities: critical,high
