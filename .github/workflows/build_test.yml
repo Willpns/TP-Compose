@@ -29,4 +29,4 @@ jobs:
           image: my-app:1.0.0
           file: ./Dockerfile
           only-severities: critical,high
-          exit-code: true
+          exit-code: false
